@@ -7,9 +7,39 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "lint:js": "eslint --ext js,jsx,ts,tsx ./ --max-warnings=0",
+    "fix:js": "eslint --ext js,jsx,ts,tsx ./ --max-warnings=0 --fix",
+    "postinstall": "husky install",
+    "prepublishOnly": "pinst --disable",
+    "postpublish": "pinst --enable"
   },
   "dependencies": {
     "astro": "^2.3.2"
+  },
+  "devDependencies": {
+    "@svgr/webpack": "^7.0.0",
+    "@types/jest": "^29.5.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.1",
+    "@typescript-eslint/parser": "^5.59.1",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^8.39.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-plugin-html": "^7.1.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint-plugin-tailwind": "^0.2.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
+    "pinst": "^3.0.0",
+    "prettier": "^2.8.8",
+    "typescript": "^5.0.4"
   }
 }
