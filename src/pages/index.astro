@@ -1,4 +1,6 @@
 ---
+import { getCollection } from 'astro:content';
+const allBalades = await getCollection('balades');
 ---
 
 <html lang="en">
@@ -11,5 +13,12 @@
 	</head>
 	<body>
 		<h1>Astro</h1>
+		<ul>
+          {allBalades.map(balade => (
+            <li>
+              <a href={`/balades/${balade.slug}`}>{balade.data.title}</a>
+            </li>
+          ))}
+        </ul>
 	</body>
 </html>
