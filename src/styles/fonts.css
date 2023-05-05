@@ -1,0 +1,19 @@
+@font-face {
+  font-family: 'Pangea Afrikan';
+  src: url('/fonts/sans.woff2') format('woff2');
+  font-weight: 300 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Recia';
+  src: url('/fonts/serif.woff2') format('woff2');
+  font-weight: 300 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+b {
+  @apply font-semibold !important;
+}

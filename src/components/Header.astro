@@ -1,0 +1,35 @@
+---
+const pathname = new URL(Astro.request.url).pathname;
+const navigation: { name: string; path: string }[] = [
+  { name: "Accueil", path: "/" },
+  { name: "Toutes les balades", path: "/balades" },
+  { name: "À propos", path: "/a-propos" },
+  { name: "Contact", path: "/contact" },
+];
+---
+
+<header class="max-w-7xl mx-auto px-4">
+  <div class="py-16 flex justify-center">
+    <a href="/">
+      <img src="/vadrouille-logo.svg" alt="Logo Vadrouille.ch" />
+    </a>
+  </div>
+  <nav
+    class="flex items-center justify-center gap-20 border-b-2 border-t-2 border-beige-200 text-xl"
+  >
+    {
+      navigation.map((item, i) => (
+        <a
+          key={`nav-item-${i}`}
+          href={item.path}
+          class:list={[
+            "py-3 border-b-2 border-beige-200 translate-y-0.5 transition-colors hover:text-black hover:border-green-500",
+            { "text-black border-green-500": pathname === item.path },
+          ]}
+        >
+          {item.name}
+        </a>
+      ))
+    }
+  </nav>
+</header>

@@ -1,0 +1,25 @@
+---
+export type IconNames =
+| 'tree'
+| 'tower'
+| 'tipi'
+| 'peak'
+| 'location'
+| 'forest'
+| 'distance'
+| 'clock'
+| 'climb'
+| 'chevron-right'
+| 'chevron-left'
+| 'chevron-down';
+
+type Props = {
+  name: IconNames;
+  className?: string;
+};
+
+const { name, className }: Props = Astro.props;
+---
+<svg aria-hidden="true" className={`top-[-0.1em] w-[1em] h-[1em] text-[0.7em] inline-flex self-center justify-center items-center relative ${className}`}>
+  <use href={`icons.svg#${name}`} />
+</svg>
