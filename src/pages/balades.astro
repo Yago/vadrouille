@@ -1,0 +1,17 @@
+---
+import { getCollection } from "astro:content";
+const allBalades = await getCollection("balades");
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Accueil">
+  <ul class="mt-8">
+    {
+      allBalades.map((balade) => (
+        <li>
+          <a href={`/balades/${balade.slug}`}>{balade.data.title}</a>
+        </li>
+      ))
+    }
+  </ul>
+</Base>

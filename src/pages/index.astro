@@ -1,24 +1,17 @@
 ---
-import { getCollection } from 'astro:content';
-const allBalades = await getCollection('balades');
-import '../styles/fonts.css';
-import Icon from '../components/Icon.astro';
-import Base from '../layouts/Base.astro';
+import { getCollection } from "astro:content";
+const allBalades = await getCollection("balades");
+import Base from "../layouts/Base.astro";
 ---
-<Base title="Accueil">
-	<p class='text-xl mt-12'>
-		Et eiusmod anim aliqua aliqua sit irure non. Reprehenderit deserunt et duis ut exercitation sunt labore non
-		deserunt ipsum cupidatat et fugiat ipsum nulla. Aute tempor non ullamco fugiat. Minim qui minim labore tempor.
-		Magna <b>elit mollit ea cupidatat magna incididunt occaecat commodo est est est do qui</b>. Consequat elit cillum
-		voluptate eu pariatur aute minim dolore nulla magna elit elit tempor. Ex in sunt fugiat. In ullamco fugiat
-		incididunt <i>irure officia nulla officia ut cillum</i>.
-	</p>
 
-	<ul class='mt-8'>
-		{allBalades.map(balade => (
-			<li>
-				<a href={`/balades/${balade.slug}`}>{balade.data.title}</a>
-			</li>
-		))}
-	</ul>
+<Base title="Accueil">
+  <ul class="mt-8">
+    {
+      allBalades.map((balade) => (
+        <li>
+          <a href={`/balades/${balade.slug}`}>{balade.data.title}</a>
+        </li>
+      ))
+    }
+  </ul>
 </Base>

@@ -1,0 +1,24 @@
+---
+import { defineCollection, z } from "astro:content";
+import Icon from "./Icon.astro";
+import { categories } from "../content/config";
+
+type Props = {
+  name: z.infer<typeof categories>;
+  className?: string;
+};
+
+const { name, className = "" }: Props = Astro.props;
+
+let iconName = "tipi";
+
+switch (name) {
+  case "Nature":
+    iconName = "forest";
+    break;
+  default:
+    break;
+}
+---
+
+<Icon name={iconName} className={className} />

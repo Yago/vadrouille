@@ -1,24 +1,94 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection } from "astro:content";
+import { Picture } from "astro-imagetools/components";
+import { format } from "date-fns";
+
+import Base from "../../layouts/Base.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import CategoryIcon from "../../components/CategoryIcon.astro";
+
+const pathname = new URL(Astro.request.url).pathname;
 export async function getStaticPaths() {
-  const balades = await getCollection('balades');
-  return balades.map(entry => ({
-    params: { slug: entry.slug }, props: { entry },
+  const balades = await getCollection("balades");
+  return balades.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
   }));
 }
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+const {
+  title,
+  slug,
+  cover,
+  excerpt,
+  publishDate,
+  seasons,
+  category,
+  location,
+  canton,
+  coordinates,
+  gpx,
+  geojson,
+  images,
+  duration,
+  difficulty,
+  elevation,
+} = entry.data;
 ---
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>{entry.data.title} {entry.data.excerpt}</h1>
-        <Content />
-	</body>
-</html>
+
+<Base title={title}>
+  <Breadcrumb
+    crumbs={[
+      {
+        name: "Toutes les balades",
+        path: "/balades",
+      },
+      {
+        name: title,
+        url: pathname,
+      },
+    ]}
+  />
+  {
+    false && (
+      <div class="rounded-md overflow-hidden mt-4">
+        <Picture
+          src={`/images/${cover}`}
+          alt="The Google logo"
+          sizes="(min-width: 1024px) 1024px, 100vw"
+          loading="lazy"
+          placeholder="blurred"
+          format={["webp", "jpeg"]}
+          formatOptions={{
+            jpg: {
+              quality: 65,
+            },
+            webp: {
+              quality: 35,
+            },
+          }}
+          aspect={2}
+        />
+      </div>
+    )
+  }
+
+  <article class="w-2/3">
+    <h1 class="font-serif text-2xl font-bold mt-8">
+      {title}
+    </h1>
+
+    <p class="text-2xs text-green-500 py-7 font-medium">
+      <CategoryIcon name={category} className="text-base text-green-800 mr-2" />
+      {category} - {seasons.join(",")} - {format(publishDate, "yyyy")}
+      {}
+    </p>
+
+    <div
+      class="max-w-full prose [&_*]:text-green-800 prose-lead:text-lg prose-p:max-w-2xl prose-p:text-base prose-li:text-sm marker:text-green-500 prose-a:text-black prose-a:font-normal hover:prose-a:decoration-green-500"
+    >
+      <Content />
+    </div>
+  </article>
+</Base>

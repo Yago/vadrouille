@@ -23,7 +23,47 @@ module.exports = {
 			sans: ['Pangea Afrikan', ...defaultTheme.fontFamily.sans],
 			serif: ['Recia', ...defaultTheme.fontFamily.serif],
 		},
+		fontSize: {
+			'2xl': [
+				'var(--step-2xl)',
+				{
+					lineHeight: '1.2em',
+				},
+			],
+			lg: [
+				'var(--step-lg)',
+				{
+					lineHeight: '1.5em',
+				},
+			],
+			base: [
+				'var(--step-base)',
+				{
+					lineHeight: '1.5em',
+				},
+			],
+			sm: [
+				'var(--step-sm)',
+				{
+					lineHeight: '1.4em',
+				},
+			],
+			xs: [
+				'var(--step-xs)',
+				{
+					lineHeight: '1.4em',
+				},
+			],
+			'2xs': [
+				'var(--step-2xs)',
+				{
+					lineHeight: '1.4em',
+				},
+			],
+		},
 		extend: {},
 	},
-	plugins: [],
+	plugins: [
+		require('@tailwindcss/typography'),
+	],
 }

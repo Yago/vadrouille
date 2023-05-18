@@ -9,27 +9,56 @@ const navigation: { name: string; path: string }[] = [
 ---
 
 <header class="max-w-7xl mx-auto px-4">
-  <div class="py-16 flex justify-center">
+  <div class="flex flex-wrap md:justify-center items-center">
     <a href="/">
-      <img src="/vadrouille-logo.svg" alt="Logo Vadrouille.ch" />
+      <img
+        src="/vadrouille-logo.svg"
+        alt="Logo Vadrouille.ch"
+        class="w-40 md:w-auto py-4 md:py-16"
+      />
     </a>
+
+    <input
+      type="checkbox"
+      class="peer hidden"
+      id="menu-toggle"
+      aria-hidden="true"
+    />
+    <label
+      for="menu-toggle"
+      class="p-2 w-12 ml-auto flex md:hidden flex-col space-y-2 transition-transform group peer-checked:rotate-[405deg] cursor-pointer"
+      aria-hidden="true"
+    >
+      <span
+        class="inline-block h-0.5 bg-black w-full transition-transform peer-checked:group-[]:translate-y-2.5"
+      ></span>
+      <span class="inline-block h-0.5 bg-black w-full"></span>
+      <span
+        class="inline-block h-0.5 bg-black w-full transition-transform peer-checked:group-[]:-translate-y-2.5 peer-checked:group-[]:rotate-90"
+      ></span>
+    </label>
+
+    <nav
+      class="w-full max-h-0 peer-checked:max-h-[400px] md:max-h-none flex flex-wrap items-center justify-center md:gap-20 peer-checked:border-b-2 md:border-b-2 border-t-2 border-beige-200 text-sm max-md:overflow-hidden transition-all ease-in-out duration-500"
+    >
+      {
+        navigation.map((item, i) => (
+          <a
+            key={`nav-item-${i}`}
+            href={item.path}
+            class:list={[
+              "w-full md:w-auto py-3 md:border-b-2 border-beige-200 translate-y-0.5 transition-colors max-md:text-green-500 hover:text-black hover:border-green-500",
+              {
+                "!text-black border-green-500":
+                  (item.path !== "/" && pathname.includes(item.path)) ||
+                  pathname === item.path,
+              },
+            ]}
+          >
+            {item.name}
+          </a>
+        ))
+      }
+    </nav>
   </div>
-  <nav
-    class="flex items-center justify-center gap-20 border-b-2 border-t-2 border-beige-200 text-xl"
-  >
-    {
-      navigation.map((item, i) => (
-        <a
-          key={`nav-item-${i}`}
-          href={item.path}
-          class:list={[
-            "py-3 border-b-2 border-beige-200 translate-y-0.5 transition-colors hover:text-black hover:border-green-500",
-            { "text-black border-green-500": pathname === item.path },
-          ]}
-        >
-          {item.name}
-        </a>
-      ))
-    }
-  </nav>
 </header>

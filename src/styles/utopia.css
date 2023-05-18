@@ -1,0 +1,62 @@
+/* Based on https://utopia.fyi/ */
+
+:root {
+  --fluid-min-width: 320;
+  --fluid-max-width: 1140;
+
+  --fluid-screen: 100vw;
+  --fluid-bp: calc(
+          (var(--fluid-screen) - var(--fluid-min-width) / 16 * 1rem) /
+          (var(--fluid-max-width) - var(--fluid-min-width))
+  );
+}
+
+@media screen and (min-width: 1140px) {
+  :root {
+    --fluid-screen: calc(var(--fluid-max-width) * 1px);
+  }
+}
+
+:root {
+  --2xl-max: 56;
+  --2xl-min: 40;
+  --step-2xl: calc(
+          ((var(--2xl-min) / 16) * 1rem) + (var(--2xl-max) - var(--2xl-min)) *
+          var(--fluid-bp)
+  );
+
+  --lg-max: 26;
+  --lg-min: 22;
+  --step-lg: calc(
+          ((var(--lg-min) / 16) * 1rem) + (var(--lg-max) - var(--lg-min)) *
+          var(--fluid-bp)
+  );
+
+  --base-max: 22;
+  --base-min: 18;
+  --step-base: calc(
+          ((var(--base-min) / 16) * 1rem) + (var(--base-max) - var(--base-min)) *
+          var(--fluid-bp)
+  );
+
+  --sm-max: 20;
+  --sm-min: 16;
+  --step-sm: calc(
+          ((var(--sm-min) / 16) * 1rem) + (var(--sm-max) - var(--sm-min)) *
+          var(--fluid-bp)
+  );
+
+  --xs-max: 18;
+  --xs-min: 14;
+  --step-xs: calc(
+          ((var(--xs-min) / 16) * 1rem) + (var(--xs-max) - var(--xs-min)) *
+          var(--fluid-bp)
+  );
+
+  --2xs-max: 16;
+  --2xs-min: 14;
+  --step-2xs: calc(
+          ((var(--2xs-min) / 16) * 1rem) + (var(--2xs-max) - var(--2xs-min)) *
+          var(--fluid-bp)
+  );
+}

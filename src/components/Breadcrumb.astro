@@ -1,0 +1,48 @@
+---
+import Icon from "./Icon.astro";
+
+type Props = {
+  crumbs: {
+    name: string;
+    path: string;
+  }[];
+};
+
+const { crumbs }: Props = Astro.props;
+---
+
+<nav aria-label="breadcrumbs">
+  <ol class="text-xs flex items-center gap-4 flex-nowrap">
+    <li class="hidden md:inline">
+      <a
+        href="/"
+        class="hover:text-black pb-1 border-b-2 border-beige-100 hover:border-green-500 transition-colors"
+      >
+        <span class="sr-only">Accueil</span>
+        <Icon name="tipi" className="text-sm" />
+      </a>
+      <span class="inline-block ml-4">›</span>
+    </li>
+    {
+      crumbs.map((crumb, i) => (
+        <li class={i !== crumbs.length - 2 ? "hidden md:inline " : ""}>
+          {i !== crumbs.length - 1 && (
+            <>
+              <span class="md:hidden">&lsaquo;</span>
+              <a
+                href={crumb.path}
+                class="hover:text-black pb-1 border-b-2 border-beige-100 hover:border-green-500 transition-colors"
+              >
+                {crumb.name}
+              </a>
+              <span class="inline-block ml-4 hidden md:inline ">&rsaquo;</span>
+            </>
+          )}
+          {i === crumbs.length - 1 && (
+            <span aria-current="page">{crumb.name}</span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
