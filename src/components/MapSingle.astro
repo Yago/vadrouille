@@ -1,0 +1,44 @@
+---
+type Props = {
+  dataPath: string;
+};
+
+const { dataPath }: Props = Astro.props;
+import "leaflet/dist/leaflet.css";
+---
+
+<div
+  id="map"
+  class="h-[calc(95vh-300px)] rounded-md overflow-hidden"
+  data-path={dataPath}
+>
+</div>
+
+<script>
+  import L from "leaflet";
+
+  const initMap = async () => {
+    const map = L.map("map", { minZoom: 7 }).setView([46.34292, 8.15603], 13);
+
+    L.tileLayer(
+      "https://wmts20.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg",
+      {
+        attribution:
+          '&copy; Données:<a href="https://www.geo.admin.ch/fr/conditions-generales-utilisation-ifdg/">swisstopo</a>',
+      }
+    ).addTo(map);
+
+    const dataPath = document.getElementById("map").dataset.path;
+    const data = await fetch(dataPath).then((res) => res.json());
+
+    L.geoJSON(data.features[0], {
+      style: {
+        color: "#FF8300",
+        weight: 5,
+        opacity: 0.85,
+      },
+    }).addTo(map);
+  };
+
+  initMap();
+</script>

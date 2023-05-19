@@ -47,6 +47,7 @@ const baladesCollection = defineCollection({
     geojson: z.string(),
     images: z.array(z.string()),
     duration: z.string(),
+    distance: z.string(),
     difficulty: z.enum(difficulties),
     elevation: z.tuple([z.number(), z.number()]),
   }),

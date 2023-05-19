@@ -1,0 +1,80 @@
+---
+type Props = {
+  dataPath: string;
+};
+
+const { dataPath }: Props = Astro.props;
+---
+
+<div class="max-w-sm">
+  <canvas id="elevation-chart" data-path={dataPath}></canvas>
+</div>
+
+<script>
+  import Chart from "chart.js/auto";
+  import getLength from "@turf/length";
+
+  const initChart = async () => {
+    const ctx = document.getElementById("elevation-chart");
+
+    const dataPath = ctx.dataset.path;
+    const data = await fetch(dataPath).then((res) => res.json());
+
+    const route = data.features[0].geometry.coordinates[0];
+    const length = Math.round(getLength(data.features[0]));
+
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: route.map((i) => i[2]),
+        datasets: [
+          {
+            label: "altitudes",
+            data: route.map((i) => i[2]),
+            borderWidth: 1,
+            pointStyle: false,
+            backgroundColor: "rgba(105, 128, 0, 0.15)",
+            borderColor: "#272E00",
+            fill: true,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false,
+          },
+          tooltip: {
+            enabled: false,
+          },
+        },
+        scales: {
+          x: {
+            ticks: {
+              callback: function (value, index, ticks) {
+                if (index === 0) return "0km";
+                if (index === ticks.length / 2 - 1) return length / 2 + "km";
+                if (index === ticks.length - 1) return length + "km";
+              },
+            },
+          },
+          y: {
+            beginAtZero: false,
+            ticks: {
+              stepSize: 100,
+              callback: function (value, index, ticks) {
+                return value
+                  .toString()
+                  .replace(".00", "")
+                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, `$1'`);
+              },
+            },
+          },
+        },
+      },
+    });
+  };
+
+  initChart();
+</script>

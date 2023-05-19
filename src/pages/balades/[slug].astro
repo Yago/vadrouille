@@ -5,7 +5,10 @@ import { format } from "date-fns";
 
 import Base from "../../layouts/Base.astro";
 import Breadcrumb from "../../components/Breadcrumb.astro";
+import Icon from "../../components/Icon.astro";
 import CategoryIcon from "../../components/CategoryIcon.astro";
+import ElevationChart from "../../components/ElevationChart.astro";
+import MapSingle from "../../components/MapSingle.astro";
 
 const pathname = new URL(Astro.request.url).pathname;
 export async function getStaticPaths() {
@@ -32,6 +35,7 @@ const {
   geojson,
   images,
   duration,
+  distance,
   difficulty,
   elevation,
 } = entry.data;
@@ -50,45 +54,99 @@ const {
       },
     ]}
   />
-  {
-    false && (
-      <div class="rounded-md overflow-hidden mt-4">
-        <Picture
-          src={`/images/${cover}`}
-          alt="The Google logo"
-          sizes="(min-width: 1024px) 1024px, 100vw"
-          loading="lazy"
-          placeholder="blurred"
-          format={["webp", "jpeg"]}
-          formatOptions={{
-            jpg: {
-              quality: 65,
-            },
-            webp: {
-              quality: 35,
-            },
-          }}
-          aspect={2}
-        />
-      </div>
-    )
-  }
 
-  <article class="w-2/3">
-    <h1 class="font-serif text-2xl font-bold mt-8">
+  <div class="rounded-md overflow-hidden mt-4">
+    <Picture
+      src={`/images/${cover}`}
+      alt="The Google logo"
+      sizes="(min-width: 1024px) 1024px, 100vw"
+      loading="lazy"
+      placeholder="blurred"
+      format={["webp", "jpeg"]}
+      formatOptions={{
+        jpg: {
+          quality: 65,
+        },
+        webp: {
+          quality: 35,
+        },
+      }}
+      aspect={2}
+    />
+  </div>
+
+  <article>
+    <h1 class="w-2/3 font-serif text-2xl font-bold mt-8 pr-10">
       {title}
     </h1>
 
-    <p class="text-2xs text-green-500 py-7 font-medium">
+    <p class="w-2/3 text-2xs text-green-500 py-7 font-medium pr-10">
       <CategoryIcon name={category} className="text-base text-green-800 mr-2" />
       {category} - {seasons.join(",")} - {format(publishDate, "yyyy")}
       {}
     </p>
 
-    <div
-      class="max-w-full prose [&_*]:text-green-800 prose-lead:text-lg prose-p:max-w-2xl prose-p:text-base prose-li:text-sm marker:text-green-500 prose-a:text-black prose-a:font-normal hover:prose-a:decoration-green-500"
-    >
-      <Content />
+    <div class="lg:flex">
+      <div
+        class="max-w-full lg:w-2/3 lg:border-r-2 border-beige-200 lg:pr-10 prose [&_*]:text-green-800 prose-lead:text-lg prose-p:max-w-2xl prose-p:text-base prose-li:text-sm marker:text-green-500 prose-a:text-black prose-a:font-normal hover:prose-a:decoration-green-500"
+      >
+        <Content />
+      </div>
+
+      <aside class="md:w-1/2 lg:w-1/3 lg:pl-10 max-lg:mt-10">
+        <div class="sticky top-0 left-0">
+          <h2 class="font-serif font-bold text-lg">Infos pratiques</h2>
+
+          <table class="text-left my-6">
+            <tbody>
+              <tr>
+                <td class="pr-2">
+                  <span class="text-lg"><Icon name="location" /></span>
+                </td>
+                <th class="font-normal">Lieu</th>
+                <td class="font-medium pl-8 py-1.5">{location}, {canton}</td>
+              </tr>
+              <tr>
+                <td class="pr-2">
+                  <span class="text-lg"><Icon name="clock" /></span>
+                </td>
+                <th class="font-normal">Durée</th>
+                <td class="font-medium pl-8 py-1.5">{duration}</td>
+              </tr>
+              <tr>
+                <td class="pr-2">
+                  <span class="text-lg"><Icon name="distance" /></span>
+                </td>
+                <th class="font-normal">Distance</th>
+                <td class="font-medium pl-8 py-1.5">{distance}</td>
+              </tr>
+              <tr>
+                <td class="pr-2">
+                  <span class="text-lg"><Icon name="peak" /></span>
+                </td>
+                <th class="font-normal">Dénivelée</th>
+                <td class="font-medium pl-8 py-1.5"
+                  >+{elevation[0]}m/-{elevation[1]}m
+                </td>
+              </tr>
+              <tr>
+                <td class="pr-2">
+                  <span class="text-lg"><Icon name="climb" /></span>
+                </td>
+                <th class="font-normal">Difficulté</th>
+                <td class="font-medium pl-8 py-1.5">{difficulty}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <ElevationChart dataPath={`/geodata/geojson/${geojson}`} />
+        </div>
+      </aside>
     </div>
   </article>
+
+  <section class="mt-10 mb-32">
+    <h2 class="font-serif font-bold text-lg mb-6">Carte de la balade</h2>
+    <MapSingle dataPath={`/geodata/geojson/${geojson}`} />
+  </section>
 </Base>
