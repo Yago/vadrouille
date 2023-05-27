@@ -8,7 +8,7 @@ import Breadcrumb from "../../components/Breadcrumb.astro";
 import Icon from "../../components/Icon.astro";
 import CategoryIcon from "../../components/CategoryIcon.astro";
 import ElevationChart from "../../components/ElevationChart.astro";
-import MapSingle from "../../components/MapSingle.astro";
+import MapboxSingle from "../../components/MapboxSingle.astro";
 
 const pathname = new URL(Astro.request.url).pathname;
 export async function getStaticPaths() {
@@ -38,6 +38,7 @@ const {
   distance,
   difficulty,
   elevation,
+  map,
 } = entry.data;
 ---
 
@@ -143,10 +144,13 @@ const {
         </div>
       </aside>
     </div>
-  </article>
 
-  <section class="mt-10 mb-32">
-    <h2 class="font-serif font-bold text-lg mb-6">Carte de la balade</h2>
-    <MapSingle dataPath={`/geodata/geojson/${geojson}`} />
-  </section>
+    <section class="mt-10 mb-32">
+      <h2 class="font-serif font-bold text-lg mb-6">Carte de la balade</h2>
+      <MapboxSingle dataPath={`/geodata/geojson/${geojson}`} config={map} />
+      <p class="text-2xs mt-1 text-gray-500">
+        <i>Clic droit pour changer l'angle de visualisation</i> ☝🤓
+      </p>
+    </section>
+  </article>
 </Base>

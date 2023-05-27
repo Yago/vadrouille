@@ -1,0 +1,32 @@
+<div
+  id="map-layers"
+  class="absolute bottom-0 right-0 -translate-x-2 -translate-y-4 flex flex-nowrap h-20 transition-all cursor-pointer"
+  x-data="{ open: false }"
+  x-bind:class="open ? 'w-64' : 'w-20'"
+  x-on:click="open = ! open"
+>
+  <button
+    title="Carte vectorielle SwissTopo"
+    data-target="vector"
+    class="absolute z-50 top-0 left-0 w-20 h-20 rounded-full overflow-hidden border-4 border-white hover:border-beige-100 active:border-beige-200 transition-colors shadow"
+    x-bind:class="open ? 'pointer-events-auto' : 'pointer-events-none'"
+  >
+    <img src="/images/vector.jpg" />
+  </button>
+  <button
+    title="Imagerie SwissTopo"
+    data-target="satelite"
+    class="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-20 rounded-full overflow-hidden border-4 border-white hover:border-beige-100 active:border-beige-200 transition-colors shadow"
+    x-bind:class="open ? 'pointer-events-auto' : 'pointer-events-none'"
+  >
+    <img src="/images/satelite.jpg" />
+  </button>
+  <button
+    title="Carte topographique SwissTopo"
+    data-target="topo"
+    class="absolute top-0 right-0 w-20 h-20 rounded-full overflow-hidden border-4 border-white hover:border-beige-100 active:border-beige-200 transition-colors shadow"
+    x-bind:class="open ? 'pointer-events-auto' : 'pointer-events-none'"
+  >
+    <img src="/images/topo.jpg" />
+  </button>
+</div>

@@ -50,6 +50,12 @@ const baladesCollection = defineCollection({
     distance: z.string(),
     difficulty: z.enum(difficulties),
     elevation: z.tuple([z.number(), z.number()]),
+    map: z.object({
+      center: z.tuple([z.number(), z.number()]),
+      zoom: z.number(),
+      bearing: z.number(),
+      pitch: z.number(),
+    }),
   }),
 });
 
