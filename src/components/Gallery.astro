@@ -14,7 +14,7 @@ import "photoswipe/dist/photoswipe.css";
 ---
 
 <div
-  class="pswp-gallery pswp-gallery--single-column grid grid-cols-2 md:grid-cols-[2fr_1fr_1fr] md:grid-rows-2"
+  class="pswp-gallery pswp-gallery--single-column grid grid-cols-2 sm:grid-cols-[2fr_1fr_1fr] sm:grid-rows-2"
   id="gallery"
   data-source={JSON.stringify(images)}
 >
@@ -24,8 +24,8 @@ import "photoswipe/dist/photoswipe.css";
         href={image.src}
         target="_blank"
         data-index={i}
-        class={`gallery-item relative rounded-md overflow-hidden hover:[&_img]:opacity-90 [&_img]:transition-opacity m-1.5 ${
-          i === 0 ? "max-md:col-span-2 md:row-span-2" : ""
+        class={`gallery-item relative rounded-sm overflow-hidden hover:[&_img]:opacity-90 [&_img]:transition-opacity m-1.5 ${
+          i === 0 ? "max-sm:col-span-2 sm:row-span-2" : ""
         }`}
       >
         <Picture

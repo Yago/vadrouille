@@ -2,6 +2,7 @@ type Icons =
   | 'tree'
   | 'tower'
   | 'tipi'
+  | 'download'
   | 'peak'
   | 'location'
   | 'forest'

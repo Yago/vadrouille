@@ -23,15 +23,12 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 const {
   title,
-  slug,
   cover,
-  excerpt,
   publishDate,
   seasons,
   category,
   location,
   canton,
-  coordinates,
   gpx,
   geojson,
   gallery,
@@ -90,7 +87,7 @@ const {
 
     <div class="lg:flex">
       <div
-        class="max-w-full lg:w-2/3 lg:border-r-2 border-beige-200 lg:pr-10 prose [&_*]:text-green-800 prose-lead:text-lg prose-p:max-w-2xl prose-p:text-base prose-li:text-sm marker:text-green-500 prose-a:text-black prose-a:font-normal hover:prose-a:decoration-green-500"
+        class="max-w-full lg:w-2/3 lg:border-r-2 border-beige-200 lg:pr-10 prose [&_*]:text-green-800 prose-lead:text-lg prose-p:max-w-2xl prose-p:text-base prose-li:text-sm marker:text-green-500 prose-a:text-black prose-a:font-normal hover:prose-a:decoration-green-500 prose-a:underline-offset-2"
       >
         <Content />
       </div>
@@ -147,14 +144,22 @@ const {
     </div>
 
     <section class="mt-12">
-      <h2 class="font-serif font-bold text-lg mb-6">Carte de la balade</h2>
+      <h2 class="font-serif font-bold text-lg">Carte de la balade</h2>
+      <a
+        href={`/geodata/gpx/${gpx}`}
+        target="_blank"
+        download
+        class="inline-block text-2xs text-green-500 font-medium mt-2 mb-6 hover:text-green-800 transitions-colors"
+      >
+        <Icon name="download" className="text-xs" /> Télécharger le GPX
+      </a>
       <MapboxSingle dataPath={`/geodata/geojson/${geojson}`} config={map} />
       <p class="text-2xs mt-1 text-gray-500 max-md:hidden">
         <i>Clic droit enfoncé/déplacé pour changer l'angle de visualisation</i> ☝🤓
       </p>
     </section>
 
-    <section class="mt-20 mb-32">
+    <section class="my-20">
       <h2 class="font-serif font-bold text-lg mb-6">Galerie photo</h2>
       <Gallery images={gallery} />
     </section>
