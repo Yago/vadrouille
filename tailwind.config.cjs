@@ -26,7 +26,8 @@ module.exports = {
 			},
 			green: {
 				500: '#698000',
-				800: '#272E00'
+				800: '#272E00',
+				900: '#0F1200'
 			},
 			braun: {
 				800: '#44291A'
@@ -39,6 +40,12 @@ module.exports = {
 		fontSize: {
 			'2xl': [
 				'var(--step-2xl)',
+				{
+					lineHeight: '1.2em',
+				},
+			],
+			'xl': [
+				'var(--step-xl)',
 				{
 					lineHeight: '1.2em',
 				},

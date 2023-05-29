@@ -9,6 +9,7 @@ import Icon from "../../components/Icon.astro";
 import CategoryIcon from "../../components/CategoryIcon.astro";
 import ElevationChart from "../../components/ElevationChart.astro";
 import MapboxSingle from "../../components/MapboxSingle.astro";
+import Gallery from "../../components/Gallery.astro";
 
 const pathname = new URL(Astro.request.url).pathname;
 export async function getStaticPaths() {
@@ -33,7 +34,7 @@ const {
   coordinates,
   gpx,
   geojson,
-  images,
+  gallery,
   duration,
   distance,
   difficulty,
@@ -77,7 +78,7 @@ const {
   </div>
 
   <article>
-    <h1 class="w-2/3 font-serif text-2xl font-bold mt-8 pr-10">
+    <h1 class="md:w-2/3 font-serif text-2xl font-bold mt-8 pr-10">
       {title}
     </h1>
 
@@ -145,12 +146,17 @@ const {
       </aside>
     </div>
 
-    <section class="mt-10 mb-32">
+    <section class="mt-12">
       <h2 class="font-serif font-bold text-lg mb-6">Carte de la balade</h2>
       <MapboxSingle dataPath={`/geodata/geojson/${geojson}`} config={map} />
-      <p class="text-2xs mt-1 text-gray-500">
-        <i>Clic droit pour changer l'angle de visualisation</i> ☝🤓
+      <p class="text-2xs mt-1 text-gray-500 max-md:hidden">
+        <i>Clic droit enfoncé/déplacé pour changer l'angle de visualisation</i> ☝🤓
       </p>
+    </section>
+
+    <section class="mt-20 mb-32">
+      <h2 class="font-serif font-bold text-lg mb-6">Galerie photo</h2>
+      <Gallery images={gallery} />
     </section>
   </article>
 </Base>

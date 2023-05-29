@@ -1,0 +1,158 @@
+---
+import { Picture } from "astro-imagetools/components";
+type Props = {
+  images: {
+    src: string;
+    caption?: string;
+    width: number;
+    height: number;
+  }[];
+};
+
+const { images }: Props = Astro.props;
+import "photoswipe/dist/photoswipe.css";
+---
+
+<div
+  class="pswp-gallery pswp-gallery--single-column grid grid-cols-2 md:grid-cols-[2fr_1fr_1fr] md:grid-rows-2"
+  id="gallery"
+  data-source={JSON.stringify(images)}
+>
+  {
+    images.slice(0, 5).map((image, i) => (
+      <a
+        href={image.src}
+        target="_blank"
+        data-index={i}
+        class={`gallery-item relative rounded-md overflow-hidden hover:[&_img]:opacity-90 [&_img]:transition-opacity m-1.5 ${
+          i === 0 ? "max-md:col-span-2 md:row-span-2" : ""
+        }`}
+      >
+        <Picture
+          src={image.src}
+          alt={image.caption ?? ""}
+          ar={1}
+          sizes="(min-width: 1024px) 1024px, 100vw"
+          loading="lazy"
+          placeholder="blurred"
+          format={["webp", "jpeg"]}
+          formatOptions={{
+            jpg: {
+              quality: 65,
+            },
+            webp: {
+              quality: 35,
+            },
+          }}
+        />
+        {i === 4 && images.length > 5 && (
+          <div
+            aria-hidden="true"
+            class="absolute z-10 inset-0 bg-green-800/50 text-white grid place-content-center text-2xl font-medium text-beige-100 hover:bg-green-800/70 transition-colors"
+          >
+            +{images.length - 5}
+          </div>
+        )}
+      </a>
+    ))
+  }
+</div>
+
+<script>
+  import PhotoSwipeLightbox from "photoswipe/lightbox";
+  import PhotoSwipe from "photoswipe";
+  const vw = window.innerWidth;
+
+  const left =
+    '<svg viewBox="0 0 24 24" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.473 0c.392.008.762.169 1.037.455l2.686 2.763c.577.6.577 1.536.003 2.133L12.735 12l6.461 6.645c.578.6.578 1.536.003 2.133l-2.723 2.8a1.481 1.481 0 0 1-2.108-.034L4.182 13.068a1.532 1.532 0 0 1-.002-2.133L14.398.426A1.488 1.488 0 0 1 15.473 0Zm2.648 19.735c.012-.012.011-.033-.003-.047l-6.967-7.165a.747.747 0 0 1 0-1.046l6.97-7.168c.011-.012.011-.033-.003-.047l-2.679-2.756L5.257 11.978c-.012.012-.011.032.003.047l10.18 10.47 2.681-2.76Z" fill="white"/></svg>\n';
+  const right =
+    '<svg viewBox="0 0 24 24" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.527 24a1.474 1.474 0 0 1-1.037-.455l-2.686-2.763a1.533 1.533 0 0 1-.003-2.133L11.265 12 4.804 5.355a1.532 1.532 0 0 1-.003-2.133l2.723-2.8a1.481 1.481 0 0 1 2.108.034l10.186 10.476c.577.6.578 1.536.002 2.133L9.602 23.574A1.488 1.488 0 0 1 8.561 24h-.034ZM5.879 4.265c-.012.012-.011.033.003.047l6.967 7.165a.747.747 0 0 1 0 1.046l-6.97 7.168c-.011.012-.011.033.003.047l2.679 2.756 10.182-10.472c.012-.012.011-.032-.003-.047L8.56 1.505l-2.681 2.76Z" fill="white"/></svg>\n';
+
+  const close =
+    '<svg viewBox="0 0 100 100" width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="M85.699 14.301c-2.3-2.3-6.102-2.3-8.5 0L50 41.5 22.699 14.301c-2.3-2.3-6.102-2.3-8.5 0-2.3 2.3-2.3 6.102 0 8.5L41.5 50 14.301 77.301c-2.3 2.3-2.3 6.102 0 8.5 1.2 1.2 2.7 1.8 4.2 1.8s3.1-.6 4.198-1.8L50 58.5l27.301 27.301c1.2 1.2 2.7 1.8 4.2 1.8s3.101-.6 4.199-1.8c2.3-2.3 2.3-6.102 0-8.5L58.5 50l27.302-27.301c2.3-2.3 2.3-6.098-.102-8.398z" fill="white" /></svg>';
+
+  const dataSource = JSON.parse(
+    document.getElementById("gallery").dataset.source
+  );
+
+  const options = {
+    dataSource,
+    pswpModule: PhotoSwipe,
+    arrowPrevSVG: left,
+    arrowNextSVG: right,
+    closeSVG: close,
+    zoom: false,
+    padding: {
+      top: vw > 762 ? 60 : 10,
+      bottom: vw > 762 ? 60 : 10,
+      left: vw > 762 ? 60 : 10,
+      right: vw > 762 ? 60 : 10,
+    },
+    bgOpacity: 1,
+    mainClass: "pswp--custom-bg",
+    gallery: "#gallery--custom-bg",
+  };
+
+  const lightbox = new PhotoSwipeLightbox(options);
+  lightbox.on("uiRegister", function () {
+    lightbox.pswp.ui.registerElement({
+      name: "custom-caption",
+      order: 9,
+      isButton: false,
+      appendTo: "root",
+      html: "Caption text",
+      onInit: (el, pswp) => {
+        lightbox.pswp.on("change", () => {
+          el.innerHTML = pswp.currSlide.data.caption || "";
+        });
+      },
+    });
+  });
+  lightbox.init();
+
+  document.querySelectorAll(".gallery-item").forEach((item) => {
+    item.addEventListener("click", (e) => {
+      e.preventDefault();
+      lightbox.loadAndOpen(+item.dataset.index);
+    });
+  });
+</script>
+
+<style is:global>
+  .pswp__img {
+    border-radius: 6px !important;
+  }
+  .pswp--custom-bg {
+    --pswp-bg: #0f1200 !important;
+  }
+  .pswp__button--arrow {
+    width: 44px !important;
+    margin-right: 30px !important;
+    margin-left: 30px !important;
+  }
+  @media screen and (max-width: 762px) {
+    .pswp__button--arrow {
+      margin-right: 0px !important;
+      margin-left: 0px !important;
+    }
+  }
+  .pswp__custom-caption {
+    font-size: 16px;
+    line-height: 1.4em !important;
+    color: #fff;
+    width: calc(100% - 32px);
+    max-width: 400px;
+    padding: 2px 8px;
+    position: absolute;
+    left: 50%;
+    bottom: 16px;
+    transform: translateX(-50%);
+  }
+  .pswp__custom-caption a {
+    color: #fff;
+    text-decoration: underline;
+  }
+  .hidden-caption-content {
+    display: none;
+  }
+</style>

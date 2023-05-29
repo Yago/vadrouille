@@ -19,28 +19,35 @@
 
 :root {
   --2xl-max: 56;
-  --2xl-min: 40;
+  --2xl-min: 30;
   --step-2xl: calc(
           ((var(--2xl-min) / 16) * 1rem) + (var(--2xl-max) - var(--2xl-min)) *
           var(--fluid-bp)
   );
 
+  --xl-max: 36;
+  --xl-min: 28;
+  --step-xl: calc(
+          ((var(--xl-min) / 16) * 1rem) + (var(--xl-max) - var(--xl-min)) *
+          var(--fluid-bp)
+  );
+
   --lg-max: 26;
-  --lg-min: 22;
+  --lg-min: 18;
   --step-lg: calc(
           ((var(--lg-min) / 16) * 1rem) + (var(--lg-max) - var(--lg-min)) *
           var(--fluid-bp)
   );
 
   --base-max: 22;
-  --base-min: 18;
+  --base-min: 16;
   --step-base: calc(
           ((var(--base-min) / 16) * 1rem) + (var(--base-max) - var(--base-min)) *
           var(--fluid-bp)
   );
 
   --sm-max: 20;
-  --sm-min: 16;
+  --sm-min: 14;
   --step-sm: calc(
           ((var(--sm-min) / 16) * 1rem) + (var(--sm-max) - var(--sm-min)) *
           var(--fluid-bp)

@@ -45,7 +45,14 @@ const baladesCollection = defineCollection({
     coordinates: z.tuple([z.number(), z.number()]),
     gpx: z.string(),
     geojson: z.string(),
-    images: z.array(z.string()),
+    gallery: z.array(
+      z.object({
+        src: z.string(),
+        caption: z.optional(z.string()),
+        width: z.number(),
+        height: z.number(),
+      })
+    ),
     duration: z.string(),
     distance: z.string(),
     difficulty: z.enum(difficulties),
