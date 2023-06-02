@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import { Picture } from "astro-imagetools/components";
-import { format } from "date-fns";
+import { format, formatDuration } from "date-fns";
 
 import Base from "../../layouts/Base.astro";
 import Breadcrumb from "../../components/Breadcrumb.astro";
@@ -110,14 +110,18 @@ const {
                   <span class="text-lg"><Icon name="clock" /></span>
                 </td>
                 <th class="font-normal">Durée</th>
-                <td class="font-medium pl-8 py-1.5">{duration}</td>
+                <td class="font-medium pl-8 py-1.5"
+                  >{
+                    Math.trunc(duration / 60) + "h" + ((duration / 60) % 1) * 60
+                  }</td
+                >
               </tr>
               <tr>
                 <td class="pr-2">
                   <span class="text-lg"><Icon name="distance" /></span>
                 </td>
                 <th class="font-normal">Distance</th>
-                <td class="font-medium pl-8 py-1.5">{distance}</td>
+                <td class="font-medium pl-8 py-1.5">{distance}km</td>
               </tr>
               <tr>
                 <td class="pr-2">

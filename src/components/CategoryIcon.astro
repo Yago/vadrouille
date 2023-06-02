@@ -3,8 +3,10 @@ import { defineCollection, z } from "astro:content";
 import Icon from "./Icon.astro";
 import { categories } from "../content/config";
 
+const categoriesEnum = z.enum(categories);
+
 type Props = {
-  name: z.infer<typeof categories>;
+  name: z.infer<typeof categoriesEnum>;
   className?: string;
 };
 

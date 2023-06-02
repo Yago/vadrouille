@@ -1,9 +1,9 @@
 import { defineCollection, z } from 'astro:content';
 
-const seasons = ['Été', 'Automne', 'Hiver', 'Printemps'] as const;
-export const categories = z.enum(['Nature', 'Histoire']);
-const difficulties = ['Facile', 'Modérée', 'Difficile'] as const;
-const cantons = [
+export const seasons = ['Été', 'Automne', 'Hiver', 'Printemps'] as const;
+export const categories = ['Nature', 'Histoire'] as const;
+export const difficulties = ['Facile', 'Modérée', 'Difficile'] as const;
+export const cantons = [
   'Appenzell Rh.-Ext.',
   'Appenzell Rh.-Int.',
   'Argovie',
@@ -39,7 +39,7 @@ const baladesCollection = defineCollection({
     excerpt: z.string(),
     publishDate: z.date(),
     seasons: z.array(z.enum(seasons)),
-    category: categories,
+    category: z.enum(categories),
     location: z.string(),
     canton: z.enum(cantons),
     coordinates: z.tuple([z.number(), z.number()]),
@@ -53,8 +53,8 @@ const baladesCollection = defineCollection({
         height: z.number(),
       })
     ),
-    duration: z.string(),
-    distance: z.string(),
+    duration: z.number(),
+    distance: z.number(),
     difficulty: z.enum(difficulties),
     elevation: z.tuple([z.number(), z.number()]),
     map: z.object({

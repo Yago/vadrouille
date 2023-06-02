@@ -1,17 +1,171 @@
 ---
 import { getCollection } from "astro:content";
-const allBalades = await getCollection("balades");
 import Base from "../layouts/Base.astro";
+import { seasons, categories, difficulties, cantons } from "../content/config";
+import { isAfter } from 'date-fns';
+
+const allBalades = await getCollection("balades");
+const balades = allBalades.sort((a, b) => isAfter(a.data.publishDate, b.data.publishDate) ? 1 : -1);
 ---
 
 <Base title="Accueil">
-  <ul class="mt-8">
-    {
-      allBalades.map((balade) => (
+  <div id="balades" data-data={JSON.stringify(balades)} x-data>
+    <div class='flex space-x-4'>
+      <select @change="$store.filters.set('category', $event.target.value)">
+        <option value="all" class='hidden'>Catégories</option>
+        <option value="all">Toutes les catégories</option>
+        {categories.map((i) => (
+          <option key={`category-${i}`} value={i}>
+            {i}
+          </option>
+        ))}
+      </select>
+      <select @change="$store.filters.set('season', $event.target.value)" placeholder='Saisons' value='all'>
+        <option value="all" class='hidden'>Saisons</option>
+        <option value="all">Toutes les saisons</option>
+        {seasons.map((i) => (
+          <option key={`season-${i}`} value={i}>
+            {i}
+          </option>
+        ))}
+      </select>
+      <select @change="$store.filters.set('canton', $event.target.value)" placeholder='Cantons' value='all'>
+        <option value="all" class='hidden'>Cantons</option>
+        <option value="all">Tous les cantons</option>
+        {cantons.map((i) => (
+          <option key={`canton-${i}`} value={i}>
+            {i}
+          </option>
+        ))}
+      </select>
+      <select @change="$store.filters.set('duration', $event.target.value)">
+        <option value="all" class='hidden'>Durée</option>
+        <option value="all">Toutes les durées</option>
+        <option value="0.1">Moins d'une heure</option>
+        <option value="1.2">Entre 1 et 2 heures</option>
+        <option value="2.4">Entre 2 et 4 heures</option>
+        <option value="4.9999">Plus de 4 heures</option>
+      </select>
+    </div>
+
+    <ul>
+      <template x-for='balade in $store.filters.pagedData'>
         <li>
-          <a href={`/balades/${balade.slug}`}>{balade.data.title}</a>
+          <a :href="`/balades/${balade.slug}`" x-text='balade.data.title'></a>
         </li>
-      ))
-    }
-  </ul>
+      </template>
+      <p x-show='$store.filters.filteredData.length === 0'>Aucun résultats</p>
+    </ul>
+
+    <nav aria-label="pagination" class="flex space-x-4 justify-center" x-show='$store.filters.total > 1'>
+      <button x-on:click="$store.filters.decrement()" :disabled="$store.filters.currentPage === 1">Précédent</button>
+
+      <ol class='flex space-x-4'>
+        <template x-for='(page, i) in $store.filters.pagination'>
+          <li
+            :class="{ 'page-item': true, 'disabled': page === '...'}"
+            :aria-current="page === $store.filters.currentPage ? 'page' : undefined"
+          >
+            <button
+              type="button"
+              :class="{'pagination-link': true, 'text-green-500': page === $store.filters.currentPage}"
+              @click="page !== '...' ? $store.filters.setPage(page) : null"
+              :disabled="page === '...'"
+              x-text='page'
+            >
+            </button>
+          </li>
+        </template>
+      </ol>
+
+      <button x-on:click="$store.filters.increment()" :disabled="$store.filters.currentPage === $store.filters.total">Suivant</button>
+    </nav>
+  </div>
 </Base>
+
+<script>
+  import {range, splitEvery} from 'ramda';
+  const itemsPerPage = 2;
+
+  document.addEventListener("alpine:init", () => {
+    Alpine.store("filters", {
+      category: 'all',
+      canton: 'all',
+      season: 'all',
+      duration: 'all',
+      currentPage: 1,
+
+      data: [],
+      filteredData: [],
+      pagedData: [],
+      total: 0,
+      pagination: [],
+
+      init() {
+        this.data = JSON.parse(document.getElementById('balades').dataset.data);
+        this.filteredData = [...this.data];
+        this.updateFilteredData();
+      },
+
+      updateFilteredData() {
+        this.filteredData = this.data.filter(i =>
+          (this.category === 'all' || this.category !== 'all' && i.data.category === this.category) &&
+          (this.season === 'all' || this.season !== 'all' && i.data.seasons.includes(this.season)) &&
+          (this.canton === 'all' || this.canton !== 'all' && i.data.canton === this.canton) &&
+          (this.duration === 'all' || this.duration !== 'all' && this.duration.split('.')[0] < i.data.duration / 60 && i.data.duration / 60 <= this.duration.split('.')[1])
+        );
+        this.updatePagedData();
+      },
+
+      updatePagedData() {
+        const pages = splitEvery(itemsPerPage, this.filteredData);
+        this.pagedData = pages[this.currentPage - 1] ?? [];
+        this.total = pages.length;
+        this.updatePagination();
+      },
+
+      updatePagination() {
+        // @see https://gist.github.com/kottenator/9d936eb3e4e3c3e02598
+        const delta = 1;
+        const left = this.currentPage - delta;
+        const right = this.currentPage + delta + 1;
+        let l;
+        const rangeWithDots = [];
+        const pages = range(1, this.total + 1).filter(page => page === 1 || page === this.total || (page >= left && page < right));
+
+        for (const i of pages) {
+          if (l) {
+            if (i - l !== 1) {
+              rangeWithDots.push('...');
+            }
+          }
+          rangeWithDots.push(i);
+          l = i;
+        }
+
+        this.pagination = rangeWithDots;
+      },
+
+      decrement() {
+        this.currentPage = this.currentPage > 1 ? this.currentPage - 1 : 1;
+        this.updatePagedData();
+      },
+
+      increment() {
+        this.currentPage = this.currentPage < this.total ? this.currentPage + 1 : this.total;
+        this.updatePagedData();
+      },
+
+      setPage(page) {
+        this.currentPage = page;
+        this.updatePagedData();
+      },
+
+      set(slug, value) {
+        this[slug] = value;
+        this.currentPage = 1;
+        this.updateFilteredData();
+      },
+    });
+  });
+</script>
