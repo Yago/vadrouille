@@ -32,7 +32,11 @@ import "photoswipe/dist/photoswipe.css";
           src={image.src}
           alt={image.caption ?? ""}
           ar={1}
-          sizes="(min-width: 1024px) 1024px, 100vw"
+          sizes={
+            i === 0
+              ? "(min-width: 1360px) 612px, (min-width: 640px) 45.71vw, calc(100vw - 44px)"
+              : "(min-width: 1360px) 300px, (min-width: 640px) 22.86vw, calc(50vw - 28px)"
+          }
           loading="lazy"
           placeholder="blurred"
           format={["webp", "jpeg"]}

@@ -1,0 +1,45 @@
+---
+import { Picture } from "astro-imagetools/components";
+import Base from "../layouts/Base.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+---
+
+<Base title="À propos">
+  <Breadcrumb
+    crumbs={[
+      {
+        name: "À propos",
+        path: "/a-propos",
+      },
+    ]}
+  />
+
+  <div class="rounded-md overflow-hidden mt-4">
+    <Picture
+      src={`/images/chaney-1.jpg`}
+      alt="Image de couverture de la page à propos"
+      sizes="(min-width: 1360px) 1248px, calc(94.23vw - 15px)"
+      loading="lazy"
+      placeholder="blurred"
+      format={["webp", "jpeg"]}
+      formatOptions={{
+        jpg: {
+          quality: 65,
+        },
+        webp: {
+          quality: 35,
+        },
+      }}
+      aspect={2}
+    />
+  </div>
+  <p class="md:w-1/2 mx-auto my-10">
+    Amet proident commodo minim ut nostrud voluptate eiusmod et culpa eiusmod
+    proident ad adipisicing eu magna. Cupidatat magna sint cillum Lorem. Ex esse
+    esse laboris et commodo ea laboris minim quis do dolore do reprehenderit
+    culpa nisi. Proident sit mollit exercitation do reprehenderit id laborum et
+    in amet officia consectetur commodo.
+  </p>
+
+  <div class="mb-36"></div>
+</Base>

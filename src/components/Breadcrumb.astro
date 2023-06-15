@@ -13,7 +13,8 @@ const { crumbs }: Props = Astro.props;
 
 <nav aria-label="breadcrumbs">
   <ol class="text-xs flex items-center gap-4 flex-nowrap">
-    <li class="hidden md:inline">
+    <li class="md:hidden">&lsaquo;</li>
+    <li class={crumbs.length > 1 ? "hidden md:inline " : ""}>
       <a
         href="/"
         class="hover:text-black pb-1 border-b-2 border-beige-100 hover:border-green-500 transition-colors"
@@ -21,14 +22,13 @@ const { crumbs }: Props = Astro.props;
         <span class="sr-only">Accueil</span>
         <Icon name="tipi" className="text-sm" />
       </a>
-      <span class="inline-block ml-4">›</span>
+      <span class="hidden md:inline-block ml-4">›</span>
     </li>
     {
       crumbs.map((crumb, i) => (
         <li class={i !== crumbs.length - 2 ? "hidden md:inline " : ""}>
           {i !== crumbs.length - 1 && (
             <>
-              <span class="md:hidden">&lsaquo;</span>
               <a
                 href={crumb.path}
                 class="hover:text-black pb-1 border-b-2 border-beige-100 hover:border-green-500 transition-colors"

@@ -16,7 +16,7 @@ const { src, alt, caption }: Props = Astro.props;
     <Picture
       src={src}
       alt={alt ?? ""}
-      sizes="(min-width: 1024px) 1024px, 100vw"
+      sizes="(min-width: 1360px) 790px, (min-width: 1040px) calc(53.33vw + 75px), calc(100vw - 32px)"
       loading="lazy"
       placeholder="blurred"
       format={["webp", "jpeg"]}

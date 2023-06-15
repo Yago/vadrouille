@@ -2,170 +2,213 @@
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import { seasons, categories, difficulties, cantons } from "../content/config";
-import { isAfter } from 'date-fns';
+import { isAfter } from "date-fns";
+import Icon from "../components/Icon.astro";
+import MapboxList from "../components/MapboxList/MapboxList.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import TeaserLarge from "../components/TeaserLarge.astro";
+import Teaser from "../components/Teaser.astro";
 
 const allBalades = await getCollection("balades");
-const balades = allBalades.sort((a, b) => isAfter(a.data.publishDate, b.data.publishDate) ? 1 : -1);
+const balades = allBalades.sort((a, b) =>
+  isAfter(a.data.publishDate, b.data.publishDate) ? 1 : -1
+);
 ---
 
-<Base title="Accueil">
-  <div id="balades" data-data={JSON.stringify(balades)} x-data>
-    <div class='flex space-x-4'>
-      <select @change="$store.filters.set('category', $event.target.value)">
-        <option value="all" class='hidden'>Catégories</option>
-        <option value="all">Toutes les catégories</option>
-        {categories.map((i) => (
-          <option key={`category-${i}`} value={i}>
-            {i}
-          </option>
-        ))}
-      </select>
-      <select @change="$store.filters.set('season', $event.target.value)" placeholder='Saisons' value='all'>
-        <option value="all" class='hidden'>Saisons</option>
-        <option value="all">Toutes les saisons</option>
-        {seasons.map((i) => (
-          <option key={`season-${i}`} value={i}>
-            {i}
-          </option>
-        ))}
-      </select>
-      <select @change="$store.filters.set('canton', $event.target.value)" placeholder='Cantons' value='all'>
-        <option value="all" class='hidden'>Cantons</option>
-        <option value="all">Tous les cantons</option>
-        {cantons.map((i) => (
-          <option key={`canton-${i}`} value={i}>
-            {i}
-          </option>
-        ))}
-      </select>
-      <select @change="$store.filters.set('duration', $event.target.value)">
-        <option value="all" class='hidden'>Durée</option>
-        <option value="all">Toutes les durées</option>
-        <option value="0.1">Moins d'une heure</option>
-        <option value="1.2">Entre 1 et 2 heures</option>
-        <option value="2.4">Entre 2 et 4 heures</option>
-        <option value="4.9999">Plus de 4 heures</option>
-      </select>
+<Base title="Toutes les balades">
+  <Breadcrumb
+    crumbs={[
+      {
+        name: "Toutes les balades",
+        path: "/balades",
+      },
+    ]}
+  />
+
+  <div
+    id="balades"
+    data-data={JSON.stringify(balades.slice(1))}
+    x-data
+    class="pb-20"
+  >
+    <!--Highlight-->
+    <TeaserLarge item={balades[0]} />
+
+    <!--Filters-->
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-6">
+      <div class="relative">
+        <select
+          @change="$store.filters.set('category', $event.target.value)"
+          class="w-full rounded-md bg-beige-100 text-sm border-beige-200 border-2 hover:border-green-500 focus:border-green-500 focus:ring-0 transition-colors"
+        >
+          <option value="all" class="hidden">Catégories</option>
+          <option value="all">Toutes les catégories</option>
+          {
+            categories.map((i) => (
+              <option key={`category-${i}`} value={i}>
+                {i}
+              </option>
+            ))
+          }
+        </select>
+        <Icon
+          name="chevron-down"
+          className="inline-block !absolute !top-1/2 -translate-y-1/2 right-4 bg-beige-100 w-20 h-8 text-base pointer-events-none"
+        />
+      </div>
+      <div class="relative">
+        <select
+          @change="$store.filters.set('season', $event.target.value)"
+          placeholder="Saisons"
+          value="all"
+          class="w-full rounded-md bg-beige-100 text-sm border-beige-200 border-2 hover:border-green-500 focus:border-green-500 focus:ring-0 transition-colors"
+        >
+          <option value="all" class="hidden">Saisons</option>
+          <option value="all">Toutes les saisons</option>
+          {
+            seasons.map((i) => (
+              <option key={`season-${i}`} value={i}>
+                {i}
+              </option>
+            ))
+          }
+        </select>
+        <Icon
+          name="chevron-down"
+          className="inline-block !absolute !top-1/2 -translate-y-1/2 right-4 bg-beige-100 w-20 h-8 text-base pointer-events-none"
+        />
+      </div>
+      <div class="relative">
+        <select
+          @change="$store.filters.set('canton', $event.target.value)"
+          placeholder="Cantons"
+          value="all"
+          class="w-full rounded-md bg-beige-100 text-sm border-beige-200 border-2 hover:border-green-500 focus:border-green-500 focus:ring-0 transition-colors"
+        >
+          <option value="all" class="hidden">Cantons</option>
+          <option value="all">Tous les cantons</option>
+          {
+            cantons.map((i) => (
+              <option key={`canton-${i}`} value={i}>
+                {i}
+              </option>
+            ))
+          }
+        </select>
+        <Icon
+          name="chevron-down"
+          className="inline-block !absolute !top-1/2 -translate-y-1/2 right-4 bg-beige-100 w-20 h-8 text-base pointer-events-none"
+        />
+      </div>
+      <div class="relative">
+        <select
+          @change="$store.filters.set('duration', $event.target.value)"
+          class="w-full rounded-md bg-beige-100 text-sm border-beige-200 border-2 hover:border-green-500 focus:border-green-500 focus:ring-0 transition-colors"
+        >
+          <option value="all" class="hidden">Durée</option>
+          <option value="all">Toutes les durées</option>
+          <option value="0.1">Moins d'une heure</option>
+          <option value="1.2">Entre 1 et 2 heures</option>
+          <option value="2.4">Entre 2 et 4 heures</option>
+          <option value="4.9999">Plus de 4 heures</option>
+        </select>
+        <Icon
+          name="chevron-down"
+          className="inline-block !absolute !top-1/2 -translate-y-1/2 right-4 bg-beige-100 w-20 h-8 text-base pointer-events-none"
+        />
+      </div>
+      <button
+        @click="$store.filters.toggleMap()"
+        class="py-2 px-4 text-sm bg-green-800 text-beige-100 border-2 border-black rounded-md text-left hover:bg-gray-950 transition-colors"
+      >
+        <span
+          x-show="!$store.filters.displayMap"
+          class="flex justify-between items-center"
+        >
+          <span>Voir la carte</span>
+          <Icon name="map" className="text-base pointer-events-none mt-1" />
+        </span>
+        <span
+          x-cloak
+          x-show="$store.filters.displayMap"
+          class="flex justify-between items-center"
+        >
+          <span>Voir la liste</span>
+          <Icon name="grid" className="text-base pointer-events-none mt-1" />
+        </span>
+      </button>
     </div>
 
-    <ul>
-      <template x-for='balade in $store.filters.pagedData'>
-        <li>
-          <a :href="`/balades/${balade.slug}`" x-text='balade.data.title'></a>
-        </li>
-      </template>
-      <p x-show='$store.filters.filteredData.length === 0'>Aucun résultats</p>
-    </ul>
+    <!--Teasers-->
+    <div
+      x-show="!$store.filters.displayMap"
+      class="grid grid-cols-2 md:grid-cols-3 mt-6 gap-6"
+    >
+      {balades.map((balade) => <Teaser item={balade} />)}
+    </div>
 
-    <nav aria-label="pagination" class="flex space-x-4 justify-center" x-show='$store.filters.total > 1'>
-      <button x-on:click="$store.filters.decrement()" :disabled="$store.filters.currentPage === 1">Précédent</button>
+    <!--Map-->
+    <div x-show="$store.filters.displayMap" class="w-full mt-6">
+      <MapboxList />
+    </div>
 
-      <ol class='flex space-x-4'>
-        <template x-for='(page, i) in $store.filters.pagination'>
+    <!--Empty State-->
+    <p
+      x-show="$store.filters.filteredData.length === 0"
+      class="w-full pt-20 text-center"
+    >
+      Aucun résultat...
+    </p>
+
+    <!--Pagination-->
+    <nav
+      aria-label="pagination"
+      class="flex space-x-6 justify-center text-sm mt-12"
+      x-show="$store.filters.total > 1"
+    >
+      <button
+        class="hover:text-green-500 transition-colors disabled:text-beige-200"
+        x-on:click="$store.filters.decrement()"
+        :disabled="$store.filters.currentPage === 1"
+      >
+        <Icon
+          name="chevron-left"
+          className="text-base pointer-events-none mr-4"
+        />
+        Précédent
+      </button>
+
+      <ol class="flex space-x-1">
+        <template x-for="(page, i) in $store.filters.pagination">
           <li
-            :class="{ 'page-item': true, 'disabled': page === '...'}"
+            :class="{'disabled': page === '...'}"
             :aria-current="page === $store.filters.currentPage ? 'page' : undefined"
           >
             <button
               type="button"
-              :class="{'pagination-link': true, 'text-green-500': page === $store.filters.currentPage}"
+              :class="{'inline-block w-6 text-center hover:text-green-500 transition-colors': true, 'text-green-500 underline underline-offset-2': page === $store.filters.currentPage}"
               @click="page !== '...' ? $store.filters.setPage(page) : null"
               :disabled="page === '...'"
-              x-text='page'
+              x-text="page"
             >
             </button>
           </li>
         </template>
       </ol>
 
-      <button x-on:click="$store.filters.increment()" :disabled="$store.filters.currentPage === $store.filters.total">Suivant</button>
+      <button
+        class="hover:text-green-500 transition-colors disabled:text-beige-200"
+        x-on:click="$store.filters.increment()"
+        :disabled="$store.filters.currentPage === $store.filters.total"
+      >
+        Suivant
+        <Icon
+          name="chevron-right"
+          className="text-base pointer-events-none ml-4"
+        />
+      </button>
     </nav>
   </div>
 </Base>
 
-<script>
-  import {range, splitEvery} from 'ramda';
-  const itemsPerPage = 2;
-
-  document.addEventListener("alpine:init", () => {
-    Alpine.store("filters", {
-      category: 'all',
-      canton: 'all',
-      season: 'all',
-      duration: 'all',
-      currentPage: 1,
-
-      data: [],
-      filteredData: [],
-      pagedData: [],
-      total: 0,
-      pagination: [],
-
-      init() {
-        this.data = JSON.parse(document.getElementById('balades').dataset.data);
-        this.filteredData = [...this.data];
-        this.updateFilteredData();
-      },
-
-      updateFilteredData() {
-        this.filteredData = this.data.filter(i =>
-          (this.category === 'all' || this.category !== 'all' && i.data.category === this.category) &&
-          (this.season === 'all' || this.season !== 'all' && i.data.seasons.includes(this.season)) &&
-          (this.canton === 'all' || this.canton !== 'all' && i.data.canton === this.canton) &&
-          (this.duration === 'all' || this.duration !== 'all' && this.duration.split('.')[0] < i.data.duration / 60 && i.data.duration / 60 <= this.duration.split('.')[1])
-        );
-        this.updatePagedData();
-      },
-
-      updatePagedData() {
-        const pages = splitEvery(itemsPerPage, this.filteredData);
-        this.pagedData = pages[this.currentPage - 1] ?? [];
-        this.total = pages.length;
-        this.updatePagination();
-      },
-
-      updatePagination() {
-        // @see https://gist.github.com/kottenator/9d936eb3e4e3c3e02598
-        const delta = 1;
-        const left = this.currentPage - delta;
-        const right = this.currentPage + delta + 1;
-        let l;
-        const rangeWithDots = [];
-        const pages = range(1, this.total + 1).filter(page => page === 1 || page === this.total || (page >= left && page < right));
-
-        for (const i of pages) {
-          if (l) {
-            if (i - l !== 1) {
-              rangeWithDots.push('...');
-            }
-          }
-          rangeWithDots.push(i);
-          l = i;
-        }
-
-        this.pagination = rangeWithDots;
-      },
-
-      decrement() {
-        this.currentPage = this.currentPage > 1 ? this.currentPage - 1 : 1;
-        this.updatePagedData();
-      },
-
-      increment() {
-        this.currentPage = this.currentPage < this.total ? this.currentPage + 1 : this.total;
-        this.updatePagedData();
-      },
-
-      setPage(page) {
-        this.currentPage = page;
-        this.updatePagedData();
-      },
-
-      set(slug, value) {
-        this[slug] = value;
-        this.currentPage = 1;
-        this.updateFilteredData();
-      },
-    });
-  });
-</script>
+<script src="../stores/filters.ts"></script>

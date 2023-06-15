@@ -9,7 +9,7 @@ module.exports = {
 			white: '#fff',
 			beige: {
 				100: '#FFFADE',
-				200: '#E6E1C8',
+				200: '#D9D5BD',
 			},
 			gray: {
 				'50':'#fafaf9',
@@ -85,5 +85,6 @@ module.exports = {
 	},
 	plugins: [
 		require('@tailwindcss/typography'),
+		require('@tailwindcss/forms'),
 	],
 }

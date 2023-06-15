@@ -26,7 +26,7 @@
   );
 
   --xl-max: 36;
-  --xl-min: 28;
+  --xl-min: 22;
   --step-xl: calc(
           ((var(--xl-min) / 16) * 1rem) + (var(--xl-max) - var(--xl-min)) *
           var(--fluid-bp)

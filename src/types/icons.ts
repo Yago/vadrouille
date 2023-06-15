@@ -1,16 +1,18 @@
 type Icons =
-  | 'tree'
-  | 'tower'
-  | 'tipi'
-  | 'download'
-  | 'peak'
-  | 'location'
-  | 'forest'
-  | 'distance'
-  | 'clock'
-  | 'climb'
-  | 'chevron-right'
+  | 'chevron-down'
   | 'chevron-left'
-  | 'chevron-down';
+  | 'chevron-right'
+  | 'climb'
+  | 'clock'
+  | 'distance'
+  | 'download'
+  | 'forest'
+  | 'list'
+  | 'location'
+  | 'map'
+  | 'peak'
+  | 'tipi'
+  | 'tower'
+  | 'tree';
 
 export default Icons;

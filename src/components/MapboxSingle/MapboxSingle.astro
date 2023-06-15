@@ -1,0 +1,28 @@
+---
+import MapLayers from "../MapLayers.astro";
+type Props = {
+  dataPath: string;
+  config: {
+    center: [number, number];
+    zoom: number;
+    bearing: number;
+    pitch: number;
+  };
+};
+
+const { dataPath, config }: Props = Astro.props;
+import "mapbox-gl/dist/mapbox-gl.css";
+---
+
+<div class="relative">
+  <div
+    id="map"
+    class="h-[calc(95vh-300px)] rounded-md overflow-hidden"
+    data-path={dataPath}
+    data-config={JSON.stringify(config)}
+  >
+  </div>
+  <MapLayers />
+</div>
+
+<script src="./MapboxSingle.ts"></script>
