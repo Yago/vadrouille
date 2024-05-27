@@ -1,6 +1,6 @@
 ---
 import { format } from "date-fns";
-import { Picture } from "astro-imagetools/components";
+import Picture from "@/components/Picture.astro";
 import CategoryIcon from "./CategoryIcon.astro";
 import { z } from "astro:content";
 import { collections } from "../content/config";
@@ -17,21 +17,11 @@ const { item }: Props = Astro.props;
     <div class="rounded-md overflow-hidden mt-4">
       <div class="group-hover:opacity-0 transition-opacity duration-300">
         <Picture
-          src={`/images/${item.data.cover}`}
+          filename={item.data.cover}
           alt="The Google logo"
           sizes="(min-width: 1360px) 1248px, calc(94.23vw - 15px)"
           loading="lazy"
-          placeholder="blurred"
-          format={["webp", "jpeg"]}
-          formatOptions={{
-            jpg: {
-              quality: 65,
-            },
-            webp: {
-              quality: 35,
-            },
-          }}
-          aspect={2}
+          ratio={2}
         />
       </div>
     </div>
@@ -60,7 +50,7 @@ const { item }: Props = Astro.props;
         name={item.data.category}
         className="text-base text-green-800 mr-2"
       />
-      {item.data.category} - {item.data.seasons.join(",")} - {
+      {item.data.category} - {item.data.seasons.join(", ")} - {
         format(item.data.publishDate, "yyyy")
       }
     </p>

@@ -33,6 +33,7 @@ export const cantons = [
 ] as const;
 
 const baladesCollection = defineCollection({
+  type: 'content',
   schema: z.object({
     title: z.string(),
     cover: z.string(),
@@ -49,8 +50,6 @@ const baladesCollection = defineCollection({
       z.object({
         src: z.string(),
         caption: z.optional(z.string()),
-        width: z.number(),
-        height: z.number(),
       })
     ),
     duration: z.number(),

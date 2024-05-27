@@ -1,5 +1,5 @@
 ---
-import { Picture } from "astro-imagetools/components";
+import Picture from "@/components/Picture.astro";
 import Base from "../layouts/Base.astro";
 import Breadcrumb from "../components/Breadcrumb.astro";
 ---
@@ -16,21 +16,11 @@ import Breadcrumb from "../components/Breadcrumb.astro";
 
   <div class="rounded-md overflow-hidden mt-4">
     <Picture
-      src={`/images/chaney-1.jpg`}
+      filename={`chaney-1.jpg`}
       alt="Image de couverture de la page à propos"
       sizes="(min-width: 1360px) 1248px, calc(94.23vw - 15px)"
       loading="lazy"
-      placeholder="blurred"
-      format={["webp", "jpeg"]}
-      formatOptions={{
-        jpg: {
-          quality: 65,
-        },
-        webp: {
-          quality: 35,
-        },
-      }}
-      aspect={2}
+      ratio={2}
     />
   </div>
   <p class="md:w-1/2 mx-auto mt-10">
@@ -40,8 +30,15 @@ import Breadcrumb from "../components/Breadcrumb.astro";
       href="https://yago.io"
       target="_blank"
       class="text-black font-normal hover:decoration-green-500 underline underline-offset-2"
-      >Développeur web de profession et photographe de passion</a
-    >, mais également amoureux de la Nature et du patrimoine histoirique, quel
+      >Développeur web de profession</a
+    >
+    et
+    <a
+      href="https://yanngouffon.com"
+      target="_blank"
+      class="text-black font-normal hover:decoration-green-500 underline underline-offset-2"
+      >photographe de passion</a
+    >, mais également amoureux de la Nature et du patrimoine historique, quel
     meilleur projet que celui-ci pour combler mes envies de partage.
   </p>
 

@@ -1,5 +1,7 @@
 ---
-import { Picture } from "astro-imagetools/components";
+import Picture from "@/components/Picture.astro";
+import pictures from '@/config/pictures';
+
 type Props = {
   images: {
     src: string;
@@ -16,12 +18,17 @@ import "photoswipe/dist/photoswipe.css";
 <div
   class="pswp-gallery pswp-gallery--single-column grid grid-cols-2 sm:grid-cols-[2fr_1fr_1fr] sm:grid-rows-2"
   id="gallery"
-  data-source={JSON.stringify(images)}
+  data-source={JSON.stringify(images.map((image) => ({ 
+    src: pictures[image.src].msrc,
+    width: pictures[image.src].w,
+    height: pictures[image.src].h,
+    caption: image.caption,
+   })))}
 >
   {
     images.slice(0, 5).map((image, i) => (
       <a
-        href={image.src}
+        href={`/images/balades/${image.src}`}
         target="_blank"
         data-index={i}
         class={`gallery-item relative rounded-sm overflow-hidden hover:[&_img]:opacity-90 [&_img]:transition-opacity m-1.5 ${
@@ -29,25 +36,15 @@ import "photoswipe/dist/photoswipe.css";
         }`}
       >
         <Picture
-          src={image.src}
+          filename={image.src}
           alt={image.caption ?? ""}
-          ar={1}
           sizes={
             i === 0
               ? "(min-width: 1360px) 612px, (min-width: 640px) 45.71vw, calc(100vw - 44px)"
               : "(min-width: 1360px) 300px, (min-width: 640px) 22.86vw, calc(50vw - 28px)"
           }
           loading="lazy"
-          placeholder="blurred"
-          format={["webp", "jpeg"]}
-          formatOptions={{
-            jpg: {
-              quality: 65,
-            },
-            webp: {
-              quality: 35,
-            },
-          }}
+          ratio={1}
         />
         {i === 4 && images.length > 5 && (
           <div
@@ -86,28 +83,29 @@ import "photoswipe/dist/photoswipe.css";
     arrowNextSVG: right,
     closeSVG: close,
     zoom: false,
+    
     padding: {
       top: vw > 762 ? 60 : 10,
       bottom: vw > 762 ? 60 : 10,
-      left: vw > 762 ? 60 : 10,
-      right: vw > 762 ? 60 : 10,
+      left: vw > 762 ? 85 : 10,
+      right: vw > 762 ? 85 : 10,
     },
     bgOpacity: 1,
-    mainClass: "pswp--custom-bg",
+    mainClass: "pswp--custom-bg text-center",
     gallery: "#gallery--custom-bg",
   };
 
   const lightbox = new PhotoSwipeLightbox(options);
   lightbox.on("uiRegister", function () {
-    lightbox.pswp.ui.registerElement({
+    lightbox.pswp?.ui?.registerElement({
       name: "custom-caption",
       order: 9,
       isButton: false,
       appendTo: "root",
       html: "Caption text",
       onInit: (el, pswp) => {
-        lightbox.pswp.on("change", () => {
-          el.innerHTML = pswp.currSlide.data.caption || "";
+        lightbox.pswp?.on("change", () => {
+          el.innerHTML = pswp.currSlide?.data.caption || "";
         });
       },
     });
@@ -121,6 +119,14 @@ import "photoswipe/dist/photoswipe.css";
     });
   });
 </script>
+
+<style is:global>
+  @media screen and (max-width: 762px) {
+    .pswp__button--arrow {
+      display: none !important;
+    }
+  }
+</style>
 
 <style is:global>
   .pswp__img {

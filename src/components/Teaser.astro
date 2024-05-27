@@ -1,6 +1,6 @@
 ---
 import { format } from "date-fns";
-import { Picture } from "astro-imagetools/components";
+import Picture from "@/components/Picture.astro";
 import CategoryIcon from "./CategoryIcon.astro";
 import { z } from "astro:content";
 import { collections } from "../content/config";
@@ -14,28 +14,17 @@ const { item }: Props = Astro.props;
 
 <a
   x-show={`$store.filters.pagedData.findIndex(i => i.slug === '${item.slug}') > -1`}
-  key={`balade-${item.slug}`}
   href={`/balades/${item.slug}`}
   class="group"
 >
   <div class="rounded-md overflow-hidden relative">
     <div class="group-hover:opacity-0 transition-opacity duration-300">
       <Picture
-        src={`/images/${item.data.cover}`}
+        filename={item.data.cover}
         alt="The Google logo"
         sizes="(min-width: 1360px) 400px, (min-width: 780px) 29.82vw, calc(50vw - 28px)"
         loading="lazy"
-        placeholder="blurred"
-        format={["webp", "jpeg"]}
-        formatOptions={{
-          jpg: {
-            quality: 65,
-          },
-          webp: {
-            quality: 35,
-          },
-        }}
-        aspect={0.8571428571}
+        ratio={0.8571428571}
       />
     </div>
     <img
@@ -60,7 +49,7 @@ const { item }: Props = Astro.props;
       name={item.data.category}
       className="text-base text-green-800 mr-2"
     />
-    {item.data.category} - {item.data.seasons.join(",")} - {
+    {item.data.category} - {item.data.seasons.join(", ")} - {
       format(item.data.publishDate, "yyyy")
     }
     {}

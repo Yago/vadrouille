@@ -45,7 +45,7 @@ const balades = allBalades.sort((a, b) =>
           <option value="all">Toutes les catégories</option>
           {
             categories.map((i) => (
-              <option key={`category-${i}`} value={i}>
+              <option value={i}>
                 {i}
               </option>
             ))
@@ -67,7 +67,7 @@ const balades = allBalades.sort((a, b) =>
           <option value="all">Toutes les saisons</option>
           {
             seasons.map((i) => (
-              <option key={`season-${i}`} value={i}>
+              <option value={i}>
                 {i}
               </option>
             ))
@@ -89,7 +89,7 @@ const balades = allBalades.sort((a, b) =>
           <option value="all">Tous les cantons</option>
           {
             cantons.map((i) => (
-              <option key={`canton-${i}`} value={i}>
+              <option value={i}>
                 {i}
               </option>
             ))
